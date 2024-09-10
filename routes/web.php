@@ -13,13 +13,5 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
-Route::controller(TodoController::class)->name('todo.')->group(function(){
-    Route::get('/','index')->name('index');
-    Route::post('/create','create')->name('create');
-    Route::get('/update/{todo}','update')->name('update');
-    Route::post('/update/{todo}','store_update');
-    Route::get('/delete/{todo}','delete')->name('delete')->missing(function(){
-        return redirect('/');
-    });
-});
+Route::redirect('/', 'todos');
+Route::resource('todos',TodoController::class);

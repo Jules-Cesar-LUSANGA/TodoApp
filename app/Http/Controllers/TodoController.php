@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Todo;
-use Illuminate\Http\Request;
+use App\Http\Requests\TodoRequest;
 
 class TodoController extends Controller
 {
@@ -18,11 +18,8 @@ class TodoController extends Controller
         $todos = $this->getTodos();
         return view('welcome',compact('todos'));
     }
-    public function create(Request $request)
+    public function store(TodoRequest $request)
     {
-        // Validate data
-        $request->validate(['content' => 'required']);
-
         // Create a new task
         $todo = new Todo();
         $todo->content = $request->content;
@@ -31,24 +28,21 @@ class TodoController extends Controller
         return redirect()->back();
     }
 
-    public function update(Todo $todo)
+    public function edit(Todo $todo)
     {
         // Get all tasks
         $todos = $this->getTodos();
         return view('welcome',compact('todo','todos'));
     }
-    public function store_update(Todo $todo, Request $request)
+    public function update(Todo $todo, TodoRequest $request)
     {
-        // Validate data
-        $request->validate(['content' => 'required']);
-        
         // Update this task
         $todo->content = $request->content;
         $todo->save();
 
-        return to_route('todo.index');
+        return to_route('todos.index');
     }
-    public function delete(Todo $todo)
+    public function destroy(Todo $todo)
     {
         // Delete this task
         $todo->delete();
